@@ -1,0 +1,4 @@
+{
+  "install": "pip3 install --user streamlit",
+  "start": "streamlit run app.py"
+}
