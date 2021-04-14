@@ -58,8 +58,8 @@ def findQA(subj, q):
 def main():
     st.header('IPL Simulation')
     subj = date_subject[today]
-    question = st.text_input('Enter question:').strip()
-    answer = st.text_input('Enter answer:').strip()
+    question = st.text_input('Enter question:').strip().lower()
+    answer = st.text_input('Enter answer:').strip().lower()
 
     if st.button('Submit'):
         if answer == '' or answer == None:
