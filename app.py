@@ -1,5 +1,3 @@
-%%writefile iplapp.py
-
 import streamlit as st
 import gspread
 import pandas as pd
