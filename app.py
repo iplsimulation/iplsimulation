@@ -2,7 +2,7 @@ import streamlit as st
 import gspread
 import pandas as pd
 from fuzzywuzzy import process
-from datetime import date
+from datetime import date, datetime
 from oauth2client.service_account import ServiceAccountCredentials
 
 PAGE_CONFIG = {'page_title': 'IPL Simulation', 'page_icon': '📓', 'layout': 'centered'}
@@ -66,20 +66,40 @@ def findQA(subj, q, ret=False):
         df.columns = ['Questions', 'Answers']
         return df
                 
-        
+def authenticate(u, p):
+    records = sheet.get_worksheet(7)
+    data = records.get_all_records()
+    for user in data:
+        if user['Username'] == u:
+            if user['Password'] == p:
+                return True
+    return False
+
+def log(t, u, s, q, a):
+    logs = sheet.get_worksheet(8)
+    logs.append_row([t, u, s, q, a])
 
 def main():
     st.header('IPL Simulation')
-    subj = date_subject[today]
-    question = st.text_input('Enter question:').strip().lower()
-    answer = st.text_input('Enter answer:').strip().lower()
-
-    if st.button('Submit'):
-        if answer == '' or answer == None:
-            findQA(subj, question)
-        else:
-            insertQA(subj, question, answer)
+    menu = ['Home']
+    if st.sidebar.selectbox('Menu', menu):
+        username = st.sidebar.text_input('Username:')
+        password = st.sidebar.text_input('Password:', type='password')
+        if st.sidebar.checkbox('Login'):
+            if authenticate(username, password):
+                st.success(f'Logged in as {username.title()}')
+                subj = date_subject[today]
+                question = st.text_input('Enter question:').strip().lower()
+                answer = st.text_input('Enter answer:').strip().lower()
+                if st.button('Submit'):
+                    if answer == '' or answer == None:
+                        findQA(subj, question)
+                        log(datetime.now().strftime("%H:%M:%S"), username, subj, question, 'Find')
+                    else:
+                        insertQA(subj, question, answer)
+                        log(datetime.now().strftime("%H:%M:%S"), username, subj, question, 'Insert')
+            else:
+                st.warning('Incorrect Username/Password')
         
 if __name__ == '__main__':
-    
-    main()
+    main() 
