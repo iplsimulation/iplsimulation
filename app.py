@@ -46,7 +46,7 @@ def findQA(subj, q):
             st.subheader(f'Answer: {dt["Answer"]}')
     
     if present == 0:
-        st.subheader('Not found, most similar question is:')
+        st.subheader('Not found, two most similar questions are:')
         qs = process.extract(q, questions)
         q1, q2 = qs[0][0], qs[1][0]
         for dt in data:
