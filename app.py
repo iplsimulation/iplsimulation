@@ -50,8 +50,11 @@ def findQA(subj, q, ret=False):
             qs = process.extract(q, questions)
             qs = [q for q, score in qs]
             st.subheader('Not found, five most similar questions are:')
-            df = findQA(subj, qs, ret=True)
-            st.write(df)
+            q_, a_ = findQA(subj, qs, ret=True)
+            for i in range(5):
+                st.write(f'Question {i+1}: {q_[i]}')
+                st.write(f'Answer {i+1}: {a_[i]}')
+                st.write('-'*30)
         
     elif ret:
         records = sheet.get_worksheet(subject_id[subj])
@@ -62,9 +65,9 @@ def findQA(subj, q, ret=False):
             if dt['Question'] in q:
                 q_.append(dt['Question'])
                 a_.append(dt['Answer'])
-        df = pd.DataFrame([q_, a_]).transpose()
-        df.columns = ['Questions', 'Answers']
-        return df
+#         df = pd.DataFrame([q_, a_]).transpose()
+#         df.columns = ['Questions', 'Answers']
+        return q_, a_
                 
 def authenticate(u, p):
     records = sheet.get_worksheet(7)
