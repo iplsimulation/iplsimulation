@@ -1,6 +1,7 @@
 import streamlit as st
 import gspread
 import pandas as pd
+from pytz import timezone
 from fuzzywuzzy import process
 from datetime import date, datetime
 from oauth2client.service_account import ServiceAccountCredentials
@@ -16,6 +17,7 @@ date_subject = {'20/04/2021': 'Big Data', '22/04/2021': 'Deep Learning', '24/04/
                '14/04/2021': 'Test', '15/04/2021': 'Test', '16/04/2021': 'Test', '17/04/2021': 'Test', '18/04/2021': 'Test', '19/04/2021': 'Test'}
 subject_id = {'Test': 0, 'Big Data': 1, 'Deep Learning': 2, 'Marketing Management': 3, 'Computer Vision': 4, 'Financial Institutions & Markets': 5, 'Natural Language Processing': 6}
 today = date.today().strftime('%d/%m/%Y')
+IST = timezone('Asia/Kolkata')
 
 def insertQA(subj, q, a):
     records = sheet.get_worksheet(subject_id[subj])
@@ -93,12 +95,12 @@ def main():
             if st.button('Submit'):
                 if answer == '' or answer == None:
                     findQA(subj, question)
-                    log(datetime.now().strftime("%H:%M:%S"), username, subj, question, 'Find')
+                    log(datetime.now(IST).strftime('%Y:%m:%d %H:%M:%S %Z %z'), username, subj, question, 'Find')
                 else:
                     insertQA(subj, question, answer)
-                    log(datetime.now().strftime("%H:%M:%S"), username, subj, question, 'Insert')
+                    log(datetime.now(IST).strftime('%Y:%m:%d %H:%M:%S %Z %z'), username, subj, question, 'Insert')
         else:
             st.warning('Incorrect Username/Password')
         
 if __name__ == '__main__':
-    main() 
+    main()
