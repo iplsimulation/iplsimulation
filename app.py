@@ -54,7 +54,7 @@ def findQA(subj, q):
                 st.subheader(f'Question: {q1}')
                 st.subheader(f'Answer: {dt["Answer"]}')
             if dt['Question'] == q2:
-                st.subheader(f'Question: {q1}')
+                st.subheader(f'Question: {q2}')
                 st.subheader(f'Answer: {dt["Answer"]}')
         
 
