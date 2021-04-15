@@ -1,3 +1,5 @@
+%%writefile iplapp.py
+
 import streamlit as st
 import gspread
 import pandas as pd
@@ -34,28 +36,38 @@ def insertQA(subj, q, a):
         st.subheader(f'Answer: {a}')
         st.subheader('Added!')
 
-def findQA(subj, q):
-    records = sheet.get_worksheet(subject_id[subj])
-    data = records.get_all_records()
-    questions = pd.DataFrame.from_dict(data)['Question'].tolist()
-    present = 0
-    for dt in data:
-        if dt['Question'] == q:
-            present += 1
-            st.subheader(f'Question: {q}')
-            st.subheader(f'Answer: {dt["Answer"]}')
-    
-    if present == 0:
-        st.subheader('Not found, two most similar questions are:')
-        qs = process.extract(q, questions)
-        q1, q2 = qs[0][0], qs[1][0]
+def findQA(subj, q, ret=False):
+    if not ret:
+        records = sheet.get_worksheet(subject_id[subj])
+        data = records.get_all_records()
+        questions = pd.DataFrame.from_dict(data)['Question'].tolist()
+        present = 0
         for dt in data:
-            if dt['Question'] == q1:
-                st.subheader(f'Question: {q1}')
+            if dt['Question'] == q:
+                present += 1
+                st.subheader(f'Question: {q}')
                 st.subheader(f'Answer: {dt["Answer"]}')
-            if dt['Question'] == q2:
-                st.subheader(f'Question: {q2}')
-                st.subheader(f'Answer: {dt["Answer"]}')
+
+        if present == 0:
+            qs = process.extract(q, questions)
+            qs = [q for q, score in qs]
+            st.subheader('Not found, five most similar questions are:')
+            df = findQA(subj, qs, ret=True)
+            st.write(df)
+        
+    elif ret:
+        records = sheet.get_worksheet(subject_id[subj])
+        data = records.get_all_records()
+        questions = pd.DataFrame.from_dict(data)['Question'].tolist()
+        q_, a_ = [], []
+        for dt in data:
+            if dt['Question'] in q:
+                q_.append(dt['Question'])
+                a_.append(dt['Answer'])
+        df = pd.DataFrame([q_, a_]).transpose()
+        df.columns = ['Questions', 'Answers']
+        return df
+                
         
 
 def main():
