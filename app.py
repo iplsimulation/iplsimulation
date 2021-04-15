@@ -65,8 +65,6 @@ def findQA(subj, q, ret=False):
             if dt['Question'] in q:
                 q_.append(dt['Question'])
                 a_.append(dt['Answer'])
-#         df = pd.DataFrame([q_, a_]).transpose()
-#         df.columns = ['Questions', 'Answers']
         return q_, a_
                 
 def authenticate(u, p):
@@ -84,25 +82,23 @@ def log(t, u, s, q, a):
 
 def main():
     st.header('IPL Simulation')
-    menu = ['Home']
-    if st.sidebar.selectbox('Menu', menu):
-        username = st.sidebar.text_input('Username:')
-        password = st.sidebar.text_input('Password:', type='password')
-        if st.sidebar.checkbox('Login'):
-            if authenticate(username, password):
-                st.success(f'Logged in as {username.title()}')
-                subj = date_subject[today]
-                question = st.text_input('Enter question:').strip().lower()
-                answer = st.text_input('Enter answer:').strip().lower()
-                if st.button('Submit'):
-                    if answer == '' or answer == None:
-                        findQA(subj, question)
-                        log(datetime.now().strftime("%H:%M:%S"), username, subj, question, 'Find')
-                    else:
-                        insertQA(subj, question, answer)
-                        log(datetime.now().strftime("%H:%M:%S"), username, subj, question, 'Insert')
-            else:
-                st.warning('Incorrect Username/Password')
+    username = st.sidebar.text_input('Username:')
+    password = st.sidebar.text_input('Password:', type='password')
+    if st.sidebar.checkbox('Login'):
+        if authenticate(username, password):
+            st.success(f'Logged in as {username.title()}')
+            subj = date_subject[today]
+            question = st.text_input('Enter question:').strip().lower()
+            answer = st.text_input('Enter answer:').strip().lower()
+            if st.button('Submit'):
+                if answer == '' or answer == None:
+                    findQA(subj, question)
+                    log(datetime.now().strftime("%H:%M:%S"), username, subj, question, 'Find')
+                else:
+                    insertQA(subj, question, answer)
+                    log(datetime.now().strftime("%H:%M:%S"), username, subj, question, 'Insert')
+        else:
+            st.warning('Incorrect Username/Password')
         
 if __name__ == '__main__':
     main() 
