@@ -81,4 +81,5 @@ def main():
             insertQA(subj, question, answer)
         
 if __name__ == '__main__':
+    
     main()
