@@ -90,7 +90,7 @@ def log(t, u, s, q, a):
 def main():
     st.header('IPL Simulation')
     username = st.sidebar.text_input('Username:')
-    password = st.sidebar.text_input('Password:', type='password')
+    password = st.sidebar.text_input('Password:')
     if st.sidebar.checkbox('Login'):
         if authenticate(username, password):
             st.success(f'Logged in as {username.title()}')
