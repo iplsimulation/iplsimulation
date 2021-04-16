@@ -53,9 +53,14 @@ def findQA(subj, q, ret=False):
             qs = [q for q, score in qs]
             st.subheader('Not found, five most similar questions are:')
             q_, a_ = findQA(subj, qs, ret=True)
-            for i in range(5):
-                st.write(f'Question {i+1}: {q_[i]}')
-                st.write(f'Answer {i+1}: {a_[i]}')
+            if len(q_) >= 5:              
+                for i in range(5):
+                    st.write(f'Question {i+1}: {q_[i]}')
+                    st.write(f'Answer {i+1}: {a_[i]}')
+                    st.write('-'*30)
+            else:
+                st.write(f'Question: {q_[0]}')
+                st.write(f'Answer: {a_[0]}')
                 st.write('-'*30)
         
     elif ret:
