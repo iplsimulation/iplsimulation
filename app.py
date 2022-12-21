@@ -12,15 +12,15 @@ scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/au
 creds = ServiceAccountCredentials.from_json_keyfile_name('iplsimulation.json', scope)
 client = gspread.authorize(creds)
 sheet = client.open('IPL Simulation')
-date_subject = {'20/04/2021': 'Big Data', '22/04/2021': 'Deep Learning', '24/04/2021': 'Marketing Management',
-               '26/04/2021': 'Computer Vision', '28/04/2021': 'Financial Institutions & Markets', '30/04/2021': 'Natural Language Processing',
-               '14/04/2021': 'Test', '15/04/2021': 'Test', '16/04/2021': 'Test', '17/04/2021': 'Test', '18/04/2021': 'Test', '19/04/2021': 'Test'}
-subject_id = {'Test': 0, 'Big Data': 1, 'Deep Learning': 2, 'Marketing Management': 3, 'Computer Vision': 4, 'Financial Institutions & Markets': 5, 'Natural Language Processing': 6}
-today = date.today().strftime('%d/%m/%Y')
-IST = timezone('Asia/Kolkata')
+# date_subject = {'20/04/2021': 'Big Data', '22/04/2021': 'Deep Learning', '24/04/2021': 'Marketing Management',
+#                '26/04/2021': 'Computer Vision', '28/04/2021': 'Financial Institutions & Markets', '30/04/2021': 'Natural Language Processing',
+#                '14/04/2021': 'Test', '15/04/2021': 'Test', '16/04/2021': 'Test', '17/04/2021': 'Test', '18/04/2021': 'Test', '19/04/2021': 'Test'}
+# subject_id = {'Test': 0, 'Big Data': 1, 'Deep Learning': 2, 'Marketing Management': 3, 'Computer Vision': 4, 'Financial Institutions & Markets': 5, 'Natural Language Processing': 6}
+# today = date.today().strftime('%d/%m/%Y')
+# IST = timezone('Asia/Kolkata')
 
 def insertQA(subj, q, a):
-    records = sheet.get_worksheet(subject_id[subj])
+    records = sheet.get_worksheet('IDS')
     data = records.get_all_records()
     present = 0
     for dt in data:
