@@ -94,7 +94,7 @@ def main():
     if st.sidebar.checkbox('Login'):
         if authenticate(username, password):
             st.success(f'Logged in as {username.title()}')
-            subj = date_subject[today]
+            subj = 'IDS'
             question = st.text_input('Enter question:').strip().lower()
             answer = st.text_input('Enter answer:').strip().lower()
             if st.button('Submit'):
