@@ -38,7 +38,7 @@ def insertQA(subj, q, a):
 
 def findQA(subj, q, ret=False):
     if not ret:
-        records = sheet.get_worksheet(subject_id[subj])
+        records = sheet.get_worksheet('IDS')
         data = records.get_all_records()
         questions = pd.DataFrame.from_dict(data)['Question'].tolist()
         present = 0
